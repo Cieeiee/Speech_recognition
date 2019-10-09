@@ -1,6 +1,7 @@
 from pathlib import Path
 import numpy as np
 import librosa
+import tensorflow as tf
 
 
 def load_data():
@@ -10,12 +11,10 @@ def load_data():
 def load_label():
     text_paths = list(Path('.').glob('../data/*.trn'))
     labels = []
-    paths = []
     for path in text_paths:
         with path.open(encoding='utf8') as f:
             text = f.readline()
             labels.append(text.split())
-            paths.append(path.parent / path.name.rstrip('.trn'))
     chars = []
     for label in labels:
         for text in label:
@@ -23,7 +22,7 @@ def load_label():
                 chars.append(text)
     char2id = {c: i for i, c in enumerate(chars)}
     id2char = {i: c for i, c in enumerate(chars)}
-    return char2id, id2char, labels, paths
+    return char2id, id2char, labels
 
 
 def batch_generator(label, data, char2id, batch_size=16):
@@ -56,5 +55,4 @@ def batch_generator(label, data, char2id, batch_size=16):
         }
         outputs = {'ctc': np.zeros(batch_size)}
         yield inputs, outputs
-
 
