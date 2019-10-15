@@ -104,3 +104,7 @@ venv.bak/
 .mypy_cache/
 .idea
 .vscode
+data/
+true_test.py
+train_data.npy
+train_label.npy
